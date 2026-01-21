@@ -1,5 +1,5 @@
 import express, { Express } from "express";
-import { getAllPlayers, getPlayerById, calculateRating } from "./services/playerService";
+import { getPlayerById, getAllPlayers, calculateRating } from "./services/playerService";
 
 // Initialize Express application
 const app: Express = express();
@@ -31,8 +31,10 @@ app.get("/api/v1/players/:id", (req, res) => {
     const id = Number(req.params.id);
     const player = getPlayerById(id);
 
-    if (!player)
-        return res.status(404).json({ message: "Player not found" });
+    if (!player) {
+        res.status(404).json({ message: "Player not found" });
+        return; 
+    }
 
     res.json(player);
 });
@@ -42,8 +44,10 @@ app.get("/api/v1/players/:id/rating", (req, res) => {
     const id = Number(req.params.id);
     const player = getPlayerById(id);
 
-    if (!player)
-        return res.status(404).json({ message: "Player not found" });
+    if (!player) {
+        res.status(404).json({ message: "Player not found" });
+        return;
+    }
 
     const { rating, totalGames } = calculateRating(player);
     
